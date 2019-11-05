@@ -1,0 +1,27 @@
+The file convert-script.js uses the FileConverter class to read in a specified CSV file of user attributes and output it as a JSON or XML file.
+The output is grouped by each user's telephone area code.
+
+Build instructions: Run `npm i` to install NPM modules.
+
+Example usage in terminal:
+> node convert-file.js inputFile=input.csv outputType=json outputFile=myOutputFile.json LastName=Stanford
+
+Flags: - inputFile (required): name of the CSV file to read
+       - ouputType (optional): can be 'json' (default) or 'xml'
+       - outputFile (optional): output file path that defaults to ./ouptput.json
+       - FirstName, LastName, Gender, PhoneNumber, ID, or EyeColor (optional): search criteria used to only output certain users. 
+         Multiple filters may be used.
+
+Unexpected input values are output as warnings to the console.
+
+New test cases were added to input.csv. Other test cases include:
+
+Output as JSON: node convert-file.js inputFile=input.csv 
+Output as JSON with multiple search criteria: node convert-file.js inputFile=input.csv LastName=Shmoe FirstName=Joe
+Output as JSON (explicit, with specified output file): node convert-file.js inputFile=input.csv outputType=json outputFile=blah.json LastName=Shmoe FirstName=Joe
+Output as XML: node convert-file.js inputFile=input.csv outputType=xml LastName=Shmoe FirstName=Joe
+Output as XML (with specified output file): node convert-file.js inputFile=input.csv outputType=xml outputFile=blah.xml LastName=Shmoe FirstName=Joe
+No input file specified: node convert-file.js outputType=xml LastName=Shmoe FirstName=Joe
+Input file does not exist: node convert-file.js inputFile=inputs.csv outputType=xml LastName=Shmoe SomeField=Joe
+Invalid output type: node convert-file.js inputFile=input.csv outputType=blah LastName=Shmoe FirstName=Joe
+Invalid search criterion: node convert-file.js inputFile=input.csv outputType=xml SomeField=Joe

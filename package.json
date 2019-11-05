@@ -1,0 +1,8 @@
+{
+  "name": "FileConverter",
+  "devDependencies": {
+    "csv-parser": "latest",
+    "lodash": "latest",
+    "xml-js": "latest"
+  }
+}
