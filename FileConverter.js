@@ -168,32 +168,32 @@ module.exports = class FileConverter {
 
   /**
    * Writes input objects to specified output file as JSON.
-   * 
-   * @returns {string} jsonString - Stringified JSON that is written to the file.
    */
   generateOutputJSON() {
     const jsonString = JSON.stringify(this.inputObjs, null, 2);
-    fs.writeFileSync(this.outputFileName, jsonString);
+    fs.writeFile(this.outputFileName, jsonString, (err) => {
+      if (err) throw err;
+      console.log(`Successfully converted ${this.inputFile} to ${this.outputFileName} as ${this.outputFileType}`);
+    });
     return jsonString;
   }
 
   /**
    * Writes input objects to specified output file as XML.
-   * 
-   * @returns {string} xmlString - XML output.
    */
   generateOutputXML() {
     const options = {compact: true, ignoreComment: true, spaces: 4};
     let xmlString = '<?xml version="1.0" encoding="utf-8"?>\n';
     xmlString += convert.json2xml(this.inputObjs, options);
-    fs.writeFileSync(this.outputFileName, xmlString);
+    fs.writeFile(this.outputFileName, xmlString, (err) => {
+      if (err) throw err;
+      console.log(`Successfully converted ${this.inputFile} to ${this.outputFileName} as ${this.outputFileType}`);
+    });
     return xmlString;
   }
 
   /**
    * Reads in CSV file, outputs to the specified file, and returns the output.
-   * 
-   * @returns {string} output - JSON/XML output that is written to the file.
    */
   generateOutput() {
     fs.createReadStream(this.inputFile)
@@ -222,18 +222,15 @@ module.exports = class FileConverter {
         }
       })
       .on('end', () => {
-        let result;
         switch (this.outputFileType) {
           case 'xml':
-            result = this.generateOutputXML();
+            this.generateOutputXML();
+            break;
           case 'json':
           default:
-            result = this.generateOutputJSON();
+            this.generateOutputJSON();
+            break;
         }
-
-        console.log(`Successfully converted ${this.inputFile} to ${this.outputFileName} as ${this.outputFileType}`);
-
-        return result;
       });
   }
 }
